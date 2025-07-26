@@ -45,18 +45,21 @@ This will start the Ollama server in the background. You should see output indic
 Ollama comes with a variety of models. Let's start with a popular one:
 
 ```bash
-# Download Llama 2 (7B parameters)
-ollama pull llama2
+# Download Llama 3.2 (3B parameters - default)
+ollama pull llama3.2
 
 # Or try a smaller, faster model
-ollama pull llama2:7b
+ollama pull llama3.2:1b
+
+# Try the larger version for better performance
+ollama pull llama3.2:8b
 ```
 
 ### 3. Run Your First Chat
 Start an interactive chat session:
 
 ```bash
-ollama run llama2
+ollama run llama3.2
 ```
 
 You'll see a prompt where you can start chatting with the model. Type your questions and press Enter to get responses.
@@ -116,7 +119,7 @@ ollama serve
 ### Interactive Chat
 ```bash
 # Start a chat session
-ollama run llama2
+ollama run llama3.2
 
 # You'll see something like:
 # >>> Send a message (/? for help)
@@ -126,7 +129,7 @@ ollama run llama2
 ### Single Query
 ```bash
 # Ask a single question
-ollama run llama2 "What is the capital of France?"
+ollama run llama3.2 "What is the capital of France?"
 ```
 
 ### Using Different Models
@@ -134,7 +137,9 @@ ollama run llama2 "What is the capital of France?"
 # Try different models
 ollama run codellama "Write a Python function to calculate fibonacci numbers"
 ollama run mistral "Explain quantum computing in simple terms"
-ollama run llama2:13b "Write a short story about a robot"
+ollama run llama3.2:8b "Write a short story about a robot"
+ollama run llama3.2 "Summarize the benefits of renewable energy"
+ollama run llama3.2:1b "Translate 'Hello world' to Spanish"
 ```
 
 ## Model Management
@@ -150,20 +155,22 @@ ollama list
 # Popular models to try
 ollama pull codellama    # Great for programming
 ollama pull mistral      # Good general purpose
-ollama pull llama2:13b   # Larger, more capable version
-ollama pull llama2:70b   # Very large, very capable
+ollama pull llama3.2:8b  # Larger, more capable version
+ollama pull llama3.2:70b # Very large, very capable
+ollama pull llama3.2     # Default 3B model with excellent performance
+ollama pull llama3.2:1b  # Fast 1B model for quick tasks
 ```
 
 ### Remove Models
 ```bash
 # Remove a model to free up space
-ollama rm llama2:70b
+ollama rm llama3.2:70b
 ```
 
 ### Model Information
 ```bash
 # Get details about a specific model
-ollama show llama2
+ollama show llama3.2
 ```
 
 ## Advanced Features
@@ -174,7 +181,7 @@ Create a `Modelfile` to customize model behavior:
 ```bash
 # Create a Modelfile
 cat > Modelfile << EOF
-FROM llama2
+FROM llama3.2
 PARAMETER temperature 0.7
 PARAMETER top_p 0.9
 SYSTEM You are a helpful coding assistant.
@@ -198,7 +205,7 @@ ollama serve
 curl -X POST http://localhost:11434/api/generate \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "llama2",
+    "model": "llama3.2",
     "prompt": "Hello, how are you?",
     "stream": false
   }'
@@ -208,7 +215,7 @@ curl -X POST http://localhost:11434/api/generate \
 ```python
 import requests
 
-def ask_ollama(prompt, model="llama2"):
+def ask_ollama(prompt, model="llama3.2"):
     response = requests.post(
         "http://localhost:11434/api/generate",
         json={
@@ -227,9 +234,13 @@ print(answer)
 ## Tips and Best Practices
 
 ### 1. Choose the Right Model Size
-- **Small models (7B)**: Fast, good for simple tasks, less memory usage
-- **Medium models (13B)**: Better quality, balanced performance
+- **Small models (1B-3B)**: Fast, good for simple tasks, less memory usage
+  - `llama3.2:1b`: 1.3GB, excellent for speed and multilingual tasks
+  - `llama3.2`: 2.0GB, outperforms many larger models on benchmarks
+- **Medium models (8B-13B)**: Better quality, balanced performance
+  - `llama3.2:8b`: Larger, more capable version
 - **Large models (70B)**: Best quality, requires more resources
+  - `llama3.2:70b`: Very large, very capable
 
 ### 2. System Requirements
 - **RAM**: 8GB minimum, 16GB+ recommended for larger models
@@ -239,11 +250,11 @@ print(answer)
 ### 3. Model Parameters
 ```bash
 # Adjust temperature (creativity vs consistency)
-ollama run llama2 --temperature 0.1  # More focused
-ollama run llama2 --temperature 0.9  # More creative
+ollama run llama3.2 --temperature 0.1  # More focused
+ollama run llama3.2 --temperature 0.9  # More creative
 
 # Adjust top_p (nucleus sampling)
-ollama run llama2 --top-p 0.9
+ollama run llama3.2 --top-p 0.9
 ```
 
 ### 4. Memory Management
@@ -255,7 +266,7 @@ ollama list
 ollama rm model-name
 
 # Pull specific model variants to save space
-ollama pull llama2:7b  # Instead of the full model
+ollama pull llama3.2:1b  # Instead of the full model
 ```
 
 ## Troubleshooting
@@ -271,7 +282,7 @@ ollama pull model-name
 **Out of memory:**
 ```bash
 # Try a smaller model
-ollama pull llama2:7b
+ollama pull llama3.2:1b
 # Or close other applications to free up RAM
 ```
 
@@ -310,7 +321,7 @@ ollama push <model>                # Push to registry
 
 ## Next Steps
 
-1. **Explore different models**: Try CodeLlama for programming, Mistral for general use
+1. **Explore different models**: Try CodeLlama for programming, Mistral for general use, Llama 3.2 for multilingual tasks
 2. **Create custom models**: Build specialized assistants for your needs
 3. **Integrate with applications**: Use the API to add AI to your projects
 4. **Join the community**: Visit [https://ollama.ai](https://ollama.ai) for updates and community
