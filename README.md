@@ -180,7 +180,7 @@ Create a `Modelfile` to customize model behavior:
 
 ```bash
 # Create a Modelfile
-cat > Modelfile << EOF
+cat > coding-llama3.2.modelfile << EOF
 FROM llama3.2
 PARAMETER temperature 0.7
 PARAMETER top_p 0.9
@@ -188,10 +188,10 @@ SYSTEM You are a helpful coding assistant.
 EOF
 
 # Build your custom model
-ollama create my-coding-assistant -f Modelfile
+ollama create coding-assistant -f coding-llama3.2.modelfile
 
 # Use your custom model
-ollama run my-coding-assistant
+ollama run coding-assistant
 ```
 
 ### API Usage
